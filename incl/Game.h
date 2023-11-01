@@ -36,4 +36,5 @@ private:
     std::vector<Color> red_dark_colors;
     std::uniform_int_distribution<int> red_light_colors_dist;
     std::uniform_int_distribution<int> red_dark_colors_dist;
+    std::uniform_int_distribution<int> zero_ten_dist;
 };

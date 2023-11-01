@@ -2,6 +2,8 @@
 
 I am no idea what me doing.
 
+Tested on [physicsclassroom](https://www.physicsclassroom.com/Physics-Interactives/Light-and-Color/Color-Filters/Color-Filters-Interactive) website for correct colors.
+
 ## **Credits:**
 
 Using:

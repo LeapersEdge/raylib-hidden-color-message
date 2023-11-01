@@ -136,7 +136,7 @@ void MyGUI::Show_Message_Generator_Menu_Bar()
     {
         if (ImGui::BeginMenu("Settings"))
         {
-            if (ImGui::BeginMenu("Font Sizes"))
+            if (ImGui::BeginMenu("Gui Font Sizes"))
             {
                 ImGui::SetWindowFontScale(message_generator_font_scale);
                 if (ImGui::MenuItem("Small"))       { message_generator_font_scale = 0.5f; }

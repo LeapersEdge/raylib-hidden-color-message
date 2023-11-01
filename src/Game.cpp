@@ -5,7 +5,8 @@
 
 Game::Game() 
     : 
-    gui(true)
+    gui(true),
+    zero_ten_dist(0, 10)
 {
     bmp_data = popo::read_BMP("./resources/Fixedsys16x28.bmp");
     letter_size = popo::Vector2D(16, 28);
@@ -112,9 +113,16 @@ void Game::Init()
 
     red_light_colors.push_back(RED);
     red_light_colors.push_back(ORANGE);
+    red_light_colors.push_back(YELLOW);
+    red_light_colors.push_back(PINK);
+    red_light_colors.push_back(MAGENTA);    
 
-    red_dark_colors.push_back(YELLOW);
+    red_dark_colors.push_back(DARKBLUE);
     red_dark_colors.push_back(BLUE);
+    red_dark_colors.push_back(LIME);
+    red_dark_colors.push_back(GREEN);
+    red_dark_colors.push_back(BLACK);
+    red_dark_colors.push_back(SKYBLUE);
 
     red_light_colors_dist = std::uniform_int_distribution<int>(0, red_light_colors.size() - 1);
     red_dark_colors_dist = std::uniform_int_distribution<int>(0, red_dark_colors.size() - 1);
@@ -171,12 +179,16 @@ void Game::Draw_Letter(char letter, popo::Vector2D position, std::mt19937& rng)
             for (int x = 0; x < letter_size.x; x++)
             {
                 if (bmp_data[(unsigned int)((bitmap_size.y - (y_index * letter_size.y + y) - 1) * bitmap_size.x + x_index * letter_size.x + x) * 3] == 0)
-                {
+                {                
                     DrawPixel(position.x + x, position.y + y, red_light_colors[red_light_colors_dist(rng)]);
                 }
                 else
                 {
-                    DrawPixel(position.x + x, position.y + y, red_dark_colors[red_dark_colors_dist(rng)]);
+                    int i = zero_ten_dist(rng);
+                    if (i < 5)
+                        DrawPixel(position.x + x, position.y + y, red_dark_colors[red_dark_colors_dist(rng)]);
+                    else
+                        DrawPixel(position.x + x, position.y + y, red_light_colors[red_light_colors_dist(rng)]);
                 }
             }
         }
