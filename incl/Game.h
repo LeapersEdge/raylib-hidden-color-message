@@ -17,7 +17,7 @@ public:
     void Render();
     void Post_Render();
 private:
-    void DrawLetter(char letter, popo::Vector2D position);
+    void Draw_Letter(char letter, popo::Vector2D position);
 private:
     MyGUI gui;
 

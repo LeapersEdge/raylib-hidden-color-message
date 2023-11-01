@@ -1,6 +1,7 @@
 #include "Game.h"
 #include <algorithm>
 #include "Bitmap.h"
+#include <fstream>
 
 Game::Game() 
     : 
@@ -116,6 +117,7 @@ void Game::Init()
 void Game::Shutdown()
 {
     gui.Shutdown();
+    delete[] bmp_data;
 }
 
 // update for game logic
@@ -127,16 +129,7 @@ void Game::Update(float& delta_time)
 // rendering graphics
 void Game::Render()
 {
-    for (int i = 0; i < bitmap_size.y; i++)
-    {
-        for (int j = 0; j < bitmap_size.x; j++)
-        {
-            if (bmp_data[((83 - i) * 512 + j) * 3] == 0)
-            {
-                DrawPixel(j, i, BLACK);
-            }
-        }
-    }
+    
 }
 
 // outside 3d drawing with camera
@@ -149,10 +142,26 @@ void Game::Post_Render()
 // private functions
 // -------------------------------------------------------
 
-void Game::DrawLetter(char letter, popo::Vector2D position)
+void Game::Draw_Letter(char letter, popo::Vector2D position)
 {   
+    std::ofstream out("log.txt", std::ios_base::app);
     if(std::find(letters.begin(), letters.end(), letter) != letters.end()) 
     {
-        /* v contains x */
+        int index = std::distance(letters.begin(), std::find(letters.begin(), letters.end(), letter));
+        int x_index = index % (int)(bitmap_size.x / letter_size.x);
+        int y_index = index / (int)(bitmap_size.x / letter_size.x);
+        
+        for (int y = 0; y < letter_size.y; y++)
+        {
+            for (int x = 0; x < letter_size.x; x++)
+            {
+                out << (unsigned int)((y_index * letter_size.y + y) * bitmap_size.x + x_index * letter_size.x + x) * 3 << std::endl;
+                out.flush();
+                if (bmp_data[(unsigned int)((bitmap_size.y - (y_index * letter_size.y + y) - 1) * bitmap_size.x + x_index * letter_size.x + x) * 3] == 0)
+                {
+                    DrawPixel(position.x + x, position.y + y, BLACK);
+                }
+            }
+        }
     }
 }

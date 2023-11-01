@@ -202,22 +202,6 @@ void MyGUI::Show_Message_Generator()
 
     if (ImGui::Button("Generate"))
     {
-        for (int i = 0; i < message_buffer.size(); i++)
-        {
-            printf("%c", message_buffer[i]);
-            if (message_buffer[i] == 'ć') { message_buffer[i] = 'c'; }
-            if (message_buffer[i] == 'č') { message_buffer[i] = 'c'; }
-            if (message_buffer[i] == 'đ') { message_buffer[i] = 'd'; }
-            if (message_buffer[i] == 'š') { message_buffer[i] = 's'; }
-            if (message_buffer[i] == 'ž') { message_buffer[i] = 'z'; }
-
-            if (message_buffer[i] = 'Č') { message_buffer[i] = 'C'; }
-            if (message_buffer[i] = 'Ć') { message_buffer[i] = 'C'; }
-            if (message_buffer[i] = 'Đ') { message_buffer[i] = 'D'; }
-            if (message_buffer[i] = 'Š') { message_buffer[i] = 'S'; }
-            if (message_buffer[i] = 'Ž') { message_buffer[i] = 'Z'; }
-        }
-
         message = message_buffer;
         generate_message = true;
     }
