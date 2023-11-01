@@ -39,7 +39,6 @@ namespace popo
 
     popo::Vector2D size_BMP(char* filename)
     {
-	    int i;
 	    FILE* f = fopen(filename, "rb");
 	    unsigned char info[54];
 

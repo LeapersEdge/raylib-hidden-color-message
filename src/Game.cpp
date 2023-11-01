@@ -111,7 +111,13 @@ void Game::Init()
     letters.push_back('~');
 
     red_light_colors.push_back(RED);
+    red_light_colors.push_back(ORANGE);
 
+    red_dark_colors.push_back(YELLOW);
+    red_dark_colors.push_back(BLUE);
+
+    red_light_colors_dist = std::uniform_int_distribution<int>(0, red_light_colors.size() - 1);
+    red_dark_colors_dist = std::uniform_int_distribution<int>(0, red_dark_colors.size() - 1);
 }
 
 void Game::Shutdown()
@@ -123,16 +129,26 @@ void Game::Shutdown()
 // update for game logic
 void Game::Update(float& delta_time)
 {
-    
+    if (gui.generate_message)
+    {
+        gui.generate_message = false;
+        message = gui.message;
+
+        rng_seed = rand();
+    }
 }
 
 // rendering graphics
 void Game::Render()
 {
-    
+    std::mt19937 rng(rng_seed);
+    for (int i = 0; i < message.size(); i++)
+    {
+        Draw_Letter(message[i], popo::Vector2D(i * letter_size.x, 0), rng);
+    }
 }
 
-// outside 3d drawing with camera
+// post render function (stuff is drawn over whats in render)
 void Game::Post_Render()
 {
     gui.Render();
@@ -142,9 +158,8 @@ void Game::Post_Render()
 // private functions
 // -------------------------------------------------------
 
-void Game::Draw_Letter(char letter, popo::Vector2D position)
+void Game::Draw_Letter(char letter, popo::Vector2D position, std::mt19937& rng)
 {   
-    std::ofstream out("log.txt", std::ios_base::app);
     if(std::find(letters.begin(), letters.end(), letter) != letters.end()) 
     {
         int index = std::distance(letters.begin(), std::find(letters.begin(), letters.end(), letter));
@@ -155,11 +170,13 @@ void Game::Draw_Letter(char letter, popo::Vector2D position)
         {
             for (int x = 0; x < letter_size.x; x++)
             {
-                out << (unsigned int)((y_index * letter_size.y + y) * bitmap_size.x + x_index * letter_size.x + x) * 3 << std::endl;
-                out.flush();
                 if (bmp_data[(unsigned int)((bitmap_size.y - (y_index * letter_size.y + y) - 1) * bitmap_size.x + x_index * letter_size.x + x) * 3] == 0)
                 {
-                    DrawPixel(position.x + x, position.y + y, BLACK);
+                    DrawPixel(position.x + x, position.y + y, red_light_colors[red_light_colors_dist(rng)]);
+                }
+                else
+                {
+                    DrawPixel(position.x + x, position.y + y, red_dark_colors[red_dark_colors_dist(rng)]);
                 }
             }
         }

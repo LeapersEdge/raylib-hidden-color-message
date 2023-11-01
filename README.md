@@ -1,5 +1,7 @@
 # Raylib pipipoppo
 
+I am no idea what me doing.
+
 ## **Credits:**
 
 Using:
