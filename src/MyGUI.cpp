@@ -6,7 +6,9 @@ MyGUI::MyGUI(bool dark_theme)
     max_message_size(100),
     max_message_size_buffer(max_message_size),
     message_generator_font_scale(1.0f),
-    message_text_scale(4)
+    message_text_scale(4),
+    light_color_minimum(200),
+    dark_color_maximum(150)
 {
     rlImGuiSetup(dark_theme);
 
@@ -213,6 +215,20 @@ void MyGUI::Show_Message_Generator()
     ImGui::InputTextMultiline("##message", message_cstr, max_message_size + 1);
     message_buffer = message_cstr;
     delete[] message_cstr;
+
+    ImGui::Text("Light color minimum: ");
+    ImGui::SameLine();
+    ImGui::SetNextItemWidth(100 * message_generator_font_scale);
+    ImGui::InputInt("##light_color_minimum", &light_color_minimum);
+    ImGui::SameLine();
+    HelpMarker("This is because the other lights are getting \"absorbed\".\n\nFor example, if looking though red glass, only red spectrum of RGB will go though, meaning that the lower the value of red in colors thats passing though the red glass, the darker it will look.");
+
+    ImGui::Text("Dark color maximum: ");
+    ImGui::SameLine();
+    ImGui::SetNextItemWidth(100 * message_generator_font_scale);
+    ImGui::InputInt("##dark_color_maximum", &dark_color_maximum);
+    ImGui::SameLine();
+    HelpMarker("This does is just to make other stuff other than letters darker so that its readable.\n\nIt is ment for desception.");
 
     if (ImGui::Button("Generate"))
     {

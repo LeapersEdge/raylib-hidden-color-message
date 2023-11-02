@@ -12,7 +12,7 @@ Game::Game()
     camera_speed(1),
     color_dist(0,255),
     light_color_dist(200, 225),
-    dark_color_dist(0, 180)
+    dark_color_dist(0, 150)
 {
     bmp_data = popo::read_BMP("./resources/Consolas13x24.bmp");
     letter_size = popo::Vector2D(13, 24);
@@ -133,6 +133,9 @@ void Game::Update(float& delta_time)
         message = gui.message;
 
         rng_seed = rand();
+
+        light_color_dist = std::uniform_int_distribution<unsigned char>(gui.light_color_minimum, 255);
+        dark_color_dist = std::uniform_int_distribution<unsigned char>(0, gui.dark_color_maximum);
     }
 
     if (IsKeyDown(KEY_UP))

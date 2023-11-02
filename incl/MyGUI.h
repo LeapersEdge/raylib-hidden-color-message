@@ -25,6 +25,8 @@ public:
     std::string message = "";
     bool generate_message = false;
     int message_text_scale;
+    int light_color_minimum;
+    int dark_color_maximum;
 
 private:
     // private functions -------------------------------
