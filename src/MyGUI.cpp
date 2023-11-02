@@ -5,7 +5,8 @@ MyGUI::MyGUI(bool dark_theme)
     open_main_dockspace(true),
     max_message_size(100),
     max_message_size_buffer(max_message_size),
-    message_generator_font_scale(1.0f)
+    message_generator_font_scale(1.0f),
+    message_text_scale(4)
 {
     rlImGuiSetup(dark_theme);
 
@@ -143,6 +144,19 @@ void MyGUI::Show_Message_Generator_Menu_Bar()
                 if (ImGui::MenuItem("Normal"))      { message_generator_font_scale = 1.0f; }
                 if (ImGui::MenuItem("Large"))       { message_generator_font_scale = 2.0f; }
                 if (ImGui::MenuItem("Hugeeeee"))    { message_generator_font_scale = 5.0f; }
+                ImGui::EndMenu();
+            }
+
+            if (ImGui::BeginMenu("Message Font Sizes"))
+            {
+                ImGui::SetWindowFontScale(message_generator_font_scale);
+                if (ImGui::MenuItem("Normal"))      { message_text_scale = 1; }
+                if (ImGui::MenuItem("Big"))         { message_text_scale = 2; }
+                if (ImGui::MenuItem("Bigger"))      { message_text_scale = 3; }
+                if (ImGui::MenuItem("Biggerer"))    { message_text_scale = 4; }
+                if (ImGui::MenuItem("Biggest"))     { message_text_scale = 6; }
+                if (ImGui::MenuItem("Biggester"))   { message_text_scale = 10; }
+                if (ImGui::MenuItem("Bruh"))        { message_text_scale = 15; }
                 ImGui::EndMenu();
             }
 

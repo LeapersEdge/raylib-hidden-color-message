@@ -34,7 +34,12 @@ private:
 
     std::vector<Color> red_light_colors;
     std::vector<Color> red_dark_colors;
-    std::uniform_int_distribution<int> red_light_colors_dist;
-    std::uniform_int_distribution<int> red_dark_colors_dist;
     std::uniform_int_distribution<int> zero_ten_dist;
+    std::uniform_int_distribution<unsigned char> color_dist;
+    std::uniform_int_distribution<unsigned char> light_color_dist;
+    std::uniform_int_distribution<unsigned char> dark_color_dist;
+
+    popo::Vector2D camera_position;
+    int text_scale;
+    int camera_speed;
 };

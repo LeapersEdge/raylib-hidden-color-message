@@ -24,6 +24,7 @@ public:
     // public data -------------------------------------
     std::string message = "";
     bool generate_message = false;
+    int message_text_scale;
 
 private:
     // private functions -------------------------------

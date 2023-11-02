@@ -6,11 +6,17 @@
 Game::Game() 
     : 
     gui(true),
-    zero_ten_dist(0, 10)
+    zero_ten_dist(0, 10),
+    camera_position(0, 0),
+    text_scale(1),
+    camera_speed(1),
+    color_dist(0,255),
+    light_color_dist(200, 225),
+    dark_color_dist(0, 180)
 {
-    bmp_data = popo::read_BMP("./resources/Fixedsys16x28.bmp");
-    letter_size = popo::Vector2D(16, 28);
-    bitmap_size = popo::size_BMP("./resources/Fixedsys16x28.bmp");
+    bmp_data = popo::read_BMP("./resources/Consolas13x24.bmp");
+    letter_size = popo::Vector2D(13, 24);
+    bitmap_size = popo::size_BMP("./resources/Consolas13x24.bmp");
 }
 
 void Game::Init()
@@ -110,22 +116,6 @@ void Game::Init()
     letters.push_back('|');
     letters.push_back('}');
     letters.push_back('~');
-
-    red_light_colors.push_back(RED);
-    red_light_colors.push_back(ORANGE);
-    red_light_colors.push_back(YELLOW);
-    red_light_colors.push_back(PINK);
-    red_light_colors.push_back(MAGENTA);    
-
-    red_dark_colors.push_back(DARKBLUE);
-    red_dark_colors.push_back(BLUE);
-    red_dark_colors.push_back(LIME);
-    red_dark_colors.push_back(GREEN);
-    red_dark_colors.push_back(BLACK);
-    red_dark_colors.push_back(SKYBLUE);
-
-    red_light_colors_dist = std::uniform_int_distribution<int>(0, red_light_colors.size() - 1);
-    red_dark_colors_dist = std::uniform_int_distribution<int>(0, red_dark_colors.size() - 1);
 }
 
 void Game::Shutdown()
@@ -144,15 +134,46 @@ void Game::Update(float& delta_time)
 
         rng_seed = rand();
     }
+
+    if (IsKeyDown(KEY_UP))
+        camera_position.y -= camera_speed;
+    if (IsKeyDown(KEY_DOWN))
+        camera_position.y += camera_speed;
+    if (IsKeyDown(KEY_LEFT))
+        camera_position.x -= camera_speed;
+    if (IsKeyDown(KEY_RIGHT))
+        camera_position.x += camera_speed; 
+
+    if (IsKeyPressed(KEY_R))
+    {
+        camera_position.x = 0;
+        camera_position.y = 0;
+        camera_speed = 1;
+    }
+
+    if (IsKeyDown(KEY_KP_ADD) && camera_speed < 100)
+        camera_speed++;
+    if (IsKeyDown(KEY_KP_SUBTRACT) && camera_speed > 1)
+        camera_speed--;
+
+    text_scale = gui.message_text_scale;
 }
 
 // rendering graphics
 void Game::Render()
 {
     std::mt19937 rng(rng_seed);
-    for (int i = 0; i < message.size(); i++)
+    int y = 0;
+    int x = 0;
+    for (int i = 0; i < message.size(); i++, x++)
     {
-        Draw_Letter(message[i], popo::Vector2D(i * letter_size.x, 0), rng);
+        if (message[i] == '\n')
+        {
+            y++;
+            x = -1;
+            continue;
+        }
+        Draw_Letter(message[i], popo::Vector2D(x * letter_size.x, y * letter_size.y), rng);
     }
 }
 
@@ -166,7 +187,7 @@ void Game::Post_Render()
 // private functions
 // -------------------------------------------------------
 
-void Game::Draw_Letter(char letter, popo::Vector2D position, std::mt19937& rng)
+void Game::Draw_Letter(char letter, popo::Vector2D position, std::mt19937 &rng)
 {   
     if(std::find(letters.begin(), letters.end(), letter) != letters.end()) 
     {
@@ -180,15 +201,33 @@ void Game::Draw_Letter(char letter, popo::Vector2D position, std::mt19937& rng)
             {
                 if (bmp_data[(unsigned int)((bitmap_size.y - (y_index * letter_size.y + y) - 1) * bitmap_size.x + x_index * letter_size.x + x) * 3] == 0)
                 {                
-                    DrawPixel(position.x + x, position.y + y, red_light_colors[red_light_colors_dist(rng)]);
+                    DrawRectangle(
+                        position.x * text_scale + x * text_scale - camera_position.x, 
+                        position.y * text_scale + y * text_scale - camera_position.y,
+                        text_scale, 
+                        text_scale, 
+                        {light_color_dist(rng), color_dist(rng), color_dist(rng), 255}
+                    );
                 }
                 else
                 {
                     int i = zero_ten_dist(rng);
-                    if (i < 5)
-                        DrawPixel(position.x + x, position.y + y, red_dark_colors[red_dark_colors_dist(rng)]);
+                    if (i < 7)
+                        DrawRectangle(
+                            position.x * text_scale + x * text_scale - camera_position.x, 
+                            position.y * text_scale + y * text_scale - camera_position.y, 
+                            text_scale,
+                            text_scale,
+                            {dark_color_dist(rng), color_dist(rng), color_dist(rng), 255}
+                        );
                     else
-                        DrawPixel(position.x + x, position.y + y, red_light_colors[red_light_colors_dist(rng)]);
+                        DrawRectangle(
+                            position.x * text_scale + x * text_scale - camera_position.x, 
+                            position.y * text_scale + y * text_scale - camera_position.y, 
+                            text_scale,
+                            text_scale,
+                            {light_color_dist(rng), color_dist(rng), color_dist(rng), 255}
+                        );
                 }
             }
         }
