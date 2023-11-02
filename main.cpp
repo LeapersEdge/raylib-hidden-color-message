@@ -12,7 +12,7 @@ int main()
 {
     // raylib init
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "pipiPOPO watermelon");
-    SetTargetFPS(15);
+    SetTargetFPS(30);
     SetWindowState(FLAG_WINDOW_RESIZABLE);
     
     Game game;
