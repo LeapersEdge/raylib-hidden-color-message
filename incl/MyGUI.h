@@ -27,6 +27,7 @@ public:
     int message_text_scale;
     int light_color_minimum;
     int dark_color_maximum;
+    int noise_factor;
 
 private:
     // private functions -------------------------------

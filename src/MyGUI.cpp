@@ -198,6 +198,7 @@ void MyGUI::Show_Message_Generator()
     ImGui::SameLine();
     ImGui::SetNextItemWidth(100 * message_generator_font_scale);
     ImGui::InputInt("##max_message_size", &max_message_size_buffer);
+    if (max_message_size_buffer <= 0) max_message_size_buffer = 1;
     ImGui::SameLine();
     if (ImGui::Button("Confirm"))   max_message_size = max_message_size_buffer;
     ImGui::SameLine();
@@ -229,6 +230,13 @@ void MyGUI::Show_Message_Generator()
     ImGui::InputInt("##dark_color_maximum", &dark_color_maximum);
     ImGui::SameLine();
     HelpMarker("This does is just to make other stuff other than letters darker so that its readable.\n\nIt is ment for desception.");
+
+    ImGui::Text("Noise factor: ");
+    ImGui::SameLine();
+    ImGui::SetNextItemWidth(100 * message_generator_font_scale);
+    ImGui::InputInt("##noise_factor", &noise_factor);
+    if (noise_factor < 0) noise_factor = 0;
+    if (noise_factor > 100) noise_factor = 100;
 
     if (ImGui::Button("Generate"))
     {
