@@ -223,6 +223,8 @@ void MyGUI::Show_Message_Generator()
     ImGui::InputInt("##light_color_minimum", &light_color_minimum);
     ImGui::SameLine();
     HelpMarker("This is because the other lights are getting \"absorbed\".\n\nFor example, if looking though red glass, only red spectrum of RGB will go though, meaning that the lower the value of red in colors thats passing though the red glass, the darker it will look.");
+    if (light_color_minimum < 0) light_color_minimum = 0;
+    if (light_color_minimum > 255) light_color_minimum = 255;
 
     ImGui::Text("Dark color maximum: ");
     ImGui::SameLine();
@@ -230,6 +232,8 @@ void MyGUI::Show_Message_Generator()
     ImGui::InputInt("##dark_color_maximum", &dark_color_maximum);
     ImGui::SameLine();
     HelpMarker("This does is just to make other stuff other than letters darker so that its readable.\n\nIt is ment for desception.");
+    if (dark_color_maximum < 0) dark_color_maximum = 0;
+    if (dark_color_maximum > 255) dark_color_maximum = 255; 
 
     ImGui::Text("Noise factor: ");
     ImGui::SameLine();
