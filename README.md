@@ -18,5 +18,8 @@ Using:
 
 Linux:
 ```sh
-make
+mkdir build
+cd build
+cmake ..
+cmake --build .
 ```

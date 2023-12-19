@@ -6,7 +6,7 @@
 Game::Game() 
     : 
     gui(true),
-    zero_ten_dist(0, 10),
+    zero_hundred_dist(0, 100),
     camera_position(0, 0),
     text_scale(1),
     camera_speed(1),
@@ -133,9 +133,6 @@ void Game::Update(float& delta_time)
         message = gui.message;
 
         rng_seed = rand();
-
-        light_color_dist = std::uniform_int_distribution<unsigned char>(gui.light_color_minimum, 255);
-        dark_color_dist = std::uniform_int_distribution<unsigned char>(0, gui.dark_color_maximum);
     }
 
     if (IsKeyDown(KEY_UP))
@@ -160,6 +157,9 @@ void Game::Update(float& delta_time)
         camera_speed--;
 
     text_scale = gui.message_text_scale;
+    light_color_dist = std::uniform_int_distribution<unsigned char>(gui.light_color_minimum, 255);
+    dark_color_dist = std::uniform_int_distribution<unsigned char>(0, gui.dark_color_maximum);
+    noise_factor = gui.noise_factor;
 }
 
 // rendering graphics
@@ -214,8 +214,8 @@ void Game::Draw_Letter(char letter, popo::Vector2D position, std::mt19937 &rng)
                 }
                 else
                 {
-                    int i = zero_ten_dist(rng);
-                    if (i < 7)
+                    int i = zero_hundred_dist(rng);
+                    if (i < noise_factor)
                         DrawRectangle(
                             position.x * text_scale + x * text_scale - camera_position.x, 
                             position.y * text_scale + y * text_scale - camera_position.y, 
