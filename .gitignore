@@ -2,3 +2,4 @@ build/*
 tests
 tests/*
 imgui.ini
+.telescope_ignore.lua
